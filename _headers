@@ -1,5 +1,7 @@
 # Netlify response headers
 # Photos and icons rarely change: let browsers cache them for a week.
+# When you replace a photo but keep its file name, bump the ?v= number on its
+# URLs in index.html (e.g. ?v=2 -> ?v=3) or returning visitors keep the old one.
 /assets/images/*
   Cache-Control: public, max-age=604800
 
