@@ -23,7 +23,7 @@ window.TF_I18N = {
 
     'hero.title': 'Teknolojia',
     'hero.title2': 'inayomwezesha kila mtu.',
-    'hero.lead': 'Tech Foundaz inaziba pengo la kidijitali kwa suluhisho jumuishi za TEHAMA, ushauri, usambazaji wa vifaa, utafiti, ulezi wa biashara changa na mafunzo kwa taasisi, biashara na watu kote Tanzania.',
+    'hero.lead': 'Tunaziba pengo la kidijitali kwa suluhisho jumuishi za TEHAMA, ushauri, usambazaji wa vifaa, utafiti, ulezi wa biashara changa na mafunzo kwa taasisi, biashara na watu kote Tanzania.',
     'hero.primary': 'Omba ushauri bure',
     'hero.secondary': 'Angalia huduma zetu',
 
