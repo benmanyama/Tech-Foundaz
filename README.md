@@ -42,7 +42,6 @@ python -m http.server 8000
 ## Before going live
 
 - **Kiswahili:** have a native speaker proofread `assets/js/i18n.js`.
-- **Opening hours:** "Mon – Sat · 8:00 – 18:00" came from the design template, not the company profile. Confirm or correct it in `index.html` and `i18n.js`.
 
 Company details (phone, email, address, registration number, tagline, vision, mission, values and core service areas) come from the Tech Foundaz company profile.
 - **Quote form:** submissions go to Formspree (`FORM_ENDPOINT` in `assets/js/main.js`, form "Tech Founders Quote Requests"). Name and phone are required. View requests and change the recipient email in the Formspree dashboard.
