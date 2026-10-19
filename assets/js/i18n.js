@@ -21,7 +21,8 @@ window.TF_I18N = {
     'nav.contact': 'Wasiliana',
     'nav.cta': 'Omba bei',
 
-    'hero.title': 'Teknolojia inayomwezesha kila mtu.',
+    'hero.title': 'Teknolojia',
+    'hero.title2': 'inayomwezesha kila mtu.',
     'hero.lead': 'Tech Foundaz inaziba pengo la kidijitali kwa suluhisho jumuishi za TEHAMA, ushauri, usambazaji wa vifaa, utafiti, ulezi wa biashara changa na mafunzo kwa taasisi, biashara na watu kote Tanzania.',
     'hero.primary': 'Omba ushauri bure',
     'hero.secondary': 'Angalia huduma zetu',

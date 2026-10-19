@@ -177,12 +177,14 @@ const FORM_ENDPOINT = 'https://formspree.io/f/meaeddyl';
     revealEls.forEach(el => revealer.observe(el));
   }
 
-  // Hero network animation ---------------------------------------------------
-  const canvas = document.querySelector('.hero__canvas');
-  const ctx = canvas && canvas.getContext && canvas.getContext('2d');
+  // Network backgrounds ------------------------------------------------------
+  // Drifting nodes joined by faint lines. The hero gets the full effect; the
+  // process section gets a quieter version with no pointer interaction.
+  const network = (canvas, { density, maxNodes, speed, lineAlpha, dotAlpha, pointerAlpha }) => {
+    const ctx = canvas.getContext && canvas.getContext('2d');
+    if (!ctx) return;
 
-  if (ctx) {
-    const hero = canvas.parentElement;
+    const section = canvas.parentElement;
     const LINK = 130;          // max distance between linked nodes
     const POINTER_LINK = 180;  // max distance from the pointer to a node
     const pointer = { x: -1e4, y: -1e4 };
@@ -191,8 +193,8 @@ const FORM_ENDPOINT = 'https://formspree.io/f/meaeddyl';
     const makeNode = () => ({
       x: Math.random() * w,
       y: Math.random() * h,
-      vx: (Math.random() - 0.5) * 0.3,
-      vy: (Math.random() - 0.5) * 0.3,
+      vx: (Math.random() - 0.5) * speed,
+      vy: (Math.random() - 0.5) * speed,
       r: Math.random() * 1.4 + 0.8,
     });
 
@@ -214,23 +216,24 @@ const FORM_ENDPOINT = 'https://formspree.io/f/meaeddyl';
           const b = nodes[j];
           const d = Math.hypot(a.x - b.x, a.y - b.y);
           if (d < LINK) {
-            ctx.strokeStyle = `rgba(124, 136, 255, ${(1 - d / LINK) * 0.35})`;
+            ctx.strokeStyle = `rgba(160, 160, 160, ${(1 - d / LINK) * lineAlpha})`;
             ctx.beginPath();
             ctx.moveTo(a.x, a.y);
             ctx.lineTo(b.x, b.y);
             ctx.stroke();
           }
         }
+        if (!pointerAlpha) continue;
         const dp = Math.hypot(a.x - pointer.x, a.y - pointer.y);
         if (dp < POINTER_LINK) {
-          ctx.strokeStyle = `rgba(174, 182, 255, ${(1 - dp / POINTER_LINK) * 0.6})`;
+          ctx.strokeStyle = `rgba(232, 150, 17, ${(1 - dp / POINTER_LINK) * pointerAlpha})`;
           ctx.beginPath();
           ctx.moveTo(a.x, a.y);
           ctx.lineTo(pointer.x, pointer.y);
           ctx.stroke();
         }
       }
-      ctx.fillStyle = 'rgba(174, 182, 255, 0.85)';
+      ctx.fillStyle = `rgba(232, 150, 17, ${dotAlpha})`;
       ctx.beginPath();
       for (const n of nodes) {
         ctx.moveTo(n.x + n.r, n.y);
@@ -255,12 +258,12 @@ const FORM_ENDPOINT = 'https://formspree.io/f/meaeddyl';
     const resize = () => {
       // a soft background doesn't need full retina resolution; this keeps phones fast
       const dpr = Math.min(window.devicePixelRatio || 1, 1.5);
-      w = hero.clientWidth;
-      h = hero.clientHeight;
+      w = section.clientWidth;
+      h = section.clientHeight;
       canvas.width = Math.round(w * dpr);
       canvas.height = Math.round(h * dpr);
       ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-      const count = Math.round(Math.min(120, Math.max(30, (w * h) / 10000)));
+      const count = Math.round(Math.min(maxNodes, Math.max(20, (w * h) / density)));
       while (nodes.length < count) nodes.push(makeNode());
       nodes.length = count;
       for (const n of nodes) {
@@ -270,25 +273,36 @@ const FORM_ENDPOINT = 'https://formspree.io/f/meaeddyl';
       if (!raf) draw(); // keep a static frame when not animating
     };
 
-    new ResizeObserver(resize).observe(hero);
+    new ResizeObserver(resize).observe(section);
     new IntersectionObserver(([entry]) => {
       inView = entry.isIntersecting;
       if (inView) start(); else stop();
-    }).observe(hero);
+    }).observe(section);
     document.addEventListener('visibilitychange', () => (document.hidden ? stop() : start()));
     reducedMotion.addEventListener('change', () => { stop(); start(); draw(); });
 
-    hero.addEventListener('pointermove', e => {
-      const rect = hero.getBoundingClientRect();
-      pointer.x = e.clientX - rect.left;
-      pointer.y = e.clientY - rect.top;
-    });
-    hero.addEventListener('pointerleave', () => { pointer.x = pointer.y = -1e4; });
+    if (pointerAlpha) {
+      section.addEventListener('pointermove', e => {
+        const rect = section.getBoundingClientRect();
+        pointer.x = e.clientX - rect.left;
+        pointer.y = e.clientY - rect.top;
+      });
+      section.addEventListener('pointerleave', () => { pointer.x = pointer.y = -1e4; });
+    }
 
     // Show a still frame first; start moving once the page has finished loading
     const begin = () => setTimeout(() => { ready = true; start(); }, 1000);
     if (document.readyState === 'complete') begin();
     else window.addEventListener('load', begin, { once: true });
+  };
+
+  const heroCanvas = document.querySelector('.hero__canvas');
+  if (heroCanvas) {
+    network(heroCanvas, { density: 10000, maxNodes: 120, speed: 0.3, lineAlpha: 0.35, dotAlpha: 0.85, pointerAlpha: 0.6 });
+  }
+  const processCanvas = document.querySelector('.process__canvas');
+  if (processCanvas) {
+    network(processCanvas, { density: 24000, maxNodes: 50, speed: 0.15, lineAlpha: 0.16, dotAlpha: 0.4, pointerAlpha: 0 });
   }
 
   // Footer year --------------------------------------------------------------
