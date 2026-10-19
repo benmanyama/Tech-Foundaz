@@ -11,7 +11,7 @@
 window.TF_I18N = {
   sw: {
     'skip': 'Ruka hadi maudhui',
-    'topbar.hours': 'Jumatatu – Ijumaa · 2:00 asubuhi – 11:00 jioni',
+    'topbar.hours': 'Jumatatu – Ijumaa 2:00 asubuhi – 11:00 jioni · Jumamosi 3:00 asubuhi – 7:00 mchana',
 
     'nav.menu': 'Menyu',
     'nav.services': 'Huduma',
