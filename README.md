@@ -9,7 +9,7 @@ index.html              Page markup (all sections)
 assets/css/styles.css   Styles; colours and fonts are CSS variables at the top
 assets/js/i18n.js       Kiswahili translations (English lives in index.html)
 assets/js/main.js       Language switch, mobile menu, quote form, scroll reveals, hero animation
-assets/images/          Service photos (WebP, 800px and 1600px) and favicon
+assets/images/          Service photos (WebP, 800px and 1600px), logo icon and favicons
 ```
 
 ## Languages (English / Kiswahili)
@@ -41,9 +41,10 @@ python -m http.server 8000
 
 ## Before going live
 
-- **Phone number:** replace the placeholder `+255 7XX XXX XXX` and `tel:+255700000000` in `index.html` (top bar and contact section).
-- **Email:** confirm `info@techfoundaz.com` is the correct address.
 - **Kiswahili:** have a native speaker proofread `assets/js/i18n.js`.
+- **Opening hours:** "Mon – Sat · 8:00 – 18:00" came from the design template, not the company profile. Confirm or correct it in `index.html` and `i18n.js`.
+
+Company details (phone, email, address, registration number, tagline, vision, mission, values and core service areas) come from the Tech Foundaz company profile.
 - **Quote form:** submissions go to Formspree (`FORM_ENDPOINT` in `assets/js/main.js`, form "Tech Founders Quote Requests"). Name and phone are required. View requests and change the recipient email in the Formspree dashboard.
 
 ## Deploying

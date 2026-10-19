@@ -26,7 +26,7 @@ const FORM_ENDPOINT = 'https://formspree.io/f/meaeddyl';
   toggle.addEventListener('click', () => setMenu(toggle.getAttribute('aria-expanded') !== 'true'));
   links.addEventListener('click', e => { if (e.target.closest('a')) setMenu(false); });
   document.addEventListener('keydown', e => { if (e.key === 'Escape') setMenu(false); });
-  window.matchMedia('(min-width: 861px)').addEventListener('change', e => { if (e.matches) setMenu(false); });
+  window.matchMedia('(min-width: 1081px)').addEventListener('change', e => { if (e.matches) setMenu(false); });
 
   // Language (English / Kiswahili) --------------------------------------------
   // English is read from the page itself; Kiswahili comes from i18n.js.
@@ -186,7 +186,7 @@ const FORM_ENDPOINT = 'https://formspree.io/f/meaeddyl';
     const LINK = 130;          // max distance between linked nodes
     const POINTER_LINK = 180;  // max distance from the pointer to a node
     const pointer = { x: -1e4, y: -1e4 };
-    let w = 0, h = 0, nodes = [], raf = 0, inView = true;
+    let w = 0, h = 0, nodes = [], raf = 0, inView = true, ready = false;
 
     const makeNode = () => ({
       x: Math.random() * w,
@@ -245,7 +245,7 @@ const FORM_ENDPOINT = 'https://formspree.io/f/meaeddyl';
       raf = requestAnimationFrame(loop);
     };
     const start = () => {
-      if (!raf && inView && !document.hidden && !reducedMotion.matches) raf = requestAnimationFrame(loop);
+      if (ready && !raf && inView && !document.hidden && !reducedMotion.matches) raf = requestAnimationFrame(loop);
     };
     const stop = () => {
       cancelAnimationFrame(raf);
@@ -253,7 +253,8 @@ const FORM_ENDPOINT = 'https://formspree.io/f/meaeddyl';
     };
 
     const resize = () => {
-      const dpr = Math.min(window.devicePixelRatio || 1, 2);
+      // a soft background doesn't need full retina resolution; this keeps phones fast
+      const dpr = Math.min(window.devicePixelRatio || 1, 1.5);
       w = hero.clientWidth;
       h = hero.clientHeight;
       canvas.width = Math.round(w * dpr);
@@ -284,7 +285,10 @@ const FORM_ENDPOINT = 'https://formspree.io/f/meaeddyl';
     });
     hero.addEventListener('pointerleave', () => { pointer.x = pointer.y = -1e4; });
 
-    start();
+    // Show a still frame first; start moving once the page has finished loading
+    const begin = () => setTimeout(() => { ready = true; start(); }, 1000);
+    if (document.readyState === 'complete') begin();
+    else window.addEventListener('load', begin, { once: true });
   }
 
   // Footer year --------------------------------------------------------------
