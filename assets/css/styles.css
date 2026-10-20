@@ -578,9 +578,17 @@ a.contact-card:hover { border-color: var(--orange); color: var(--ink); }
 .footer { background: var(--black); color: var(--dark-text); border-top: 3px solid var(--orange); }
 .footer__inner {
   padding-top: 32px; padding-bottom: 32px;
-  display: flex; justify-content: space-between; gap: 16px; flex-wrap: wrap; font-size: 14px;
+  display: flex; justify-content: space-between; align-items: center; gap: 16px; flex-wrap: wrap; font-size: 14px;
 }
 .footer strong { color: var(--white); font-weight: 800; letter-spacing: 0.03em; }
+.footer__social { display: flex; gap: 10px; }
+.footer__social a {
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 36px; height: 36px; border-radius: 50%;
+  border: 1px solid var(--dark-3); color: var(--dark-text);
+  transition: color 0.2s, border-color 0.2s;
+}
+.footer__social a:hover, .footer__social a:focus-visible { color: var(--orange); border-color: var(--orange); }
 
 /* Brand texture --------------------------------------------------------- */
 /* Faint network pattern on the light sections, shown only in the side margins
